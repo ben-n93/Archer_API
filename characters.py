@@ -1,0 +1,23 @@
+from flask import make_response, abort
+from config import db
+from models import Character, character_schema, characters_schema
+
+def read_all():
+    characters = Character.query.all()
+    return characters_schema.dump(characters)
+
+def read_one(id):
+    character = Character.query.filter(Character.id == id).one_or_none()
+    if character is not None:
+        return character_schema.dump(character)
+    else:
+        abort(404, f"Character with {id} not found.")
+
+def read_multiple(ids):
+    characters = Character.query.filter(Character.id.in_(ids)).all()
+    if characters:
+        return characters_schema.dump(characters)
+    else:
+        abort(404, f"Character IDs not found.")
+
+    

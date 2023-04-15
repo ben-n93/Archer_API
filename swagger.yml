@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  title: "Archer API"
+  description: "Archer API is based on the adult animated sitcom Archer. It provides data about the show's episodes, characters and quotes."
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Character:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer"
+          description: "id of the character."
+        name:
+          type: "string"
+          description: "Name of the character."
+        aliases:
+          type: "string"
+          description: "Aliases/nicknames the character is known by."
+        occupations:
+          type: "string"
+          description: "The character's current and former jobs."
+        first_apperance:
+          type: "string"
+          description: "The episode this character first appeared in."
+        voice_actor:
+          type: "string"
+          description: "The character's voice actor."
+      
+    Quote:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer"
+          description: "id of the quote."
+        quote:
+          type: "string"
+          description: "Quote from the show."
+        character:
+          type: "string"
+          description: "Character who said the quote."
+        episode:
+          type: "string"
+          description: "Episode in which quote was said."
+
+    Episode:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer"
+          description: "id of the episode."
+        name:
+          type: "string"
+          description: "Name of the episode."
+        season:
+          type: "integer"
+          description: "Season."
+        ep_number:
+          type: "integer"
+          description: "Episode number."
+        original_air_date:
+          type: "string"
+          description: "Date on which the episode first aired."
+
+  parameters:
+    id:
+      name: "id"
+      description: "The id of the resource."
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    ids:
+      name: "ids"
+      description: "IDs of the resources you want."
+      in: path
+      required: True
+      schema:
+        type: array
+        items:
+          type: integer
+        
+paths:
+  /characters:
+    get:
+      operationId: "characters.read_all" # Module and function.
+      tags:
+        - "Characters"
+      summary: "Get all characters." # UI text.
+      responses:
+        "200":
+          description: "Successfully retrieved all characters."
+  /characters/{id}:
+    get:
+      operationId: "characters.read_one"
+      tags:
+        - "Characters"
+      summary: "Get a single character"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully retrieved character."
+  /characters/{ids}:
+    get:
+      operationId: "characters.read_multiple"
+      tags:
+        - "Characters"
+      summary: "Get multiple characters."
+      parameters:
+        - $ref: "#/components/parameters/ids"
+      responses:
+        "200":
+          description: "Successfully retrieved characters."
+
+  /quotes:
+    get:
+      operationId: "quotes.read_all"
+      tags:
+        - "Quotes"
+      summary: "Get all quotes."
+      responses:
+        "200":
+          description: "Succesfully retrieved all quotes."
+  
+  /quotes/{id}:
+      get:
+        operationId: "quotes.read_one"
+        tags:
+          - "Quotes"
+        summary: "Get a single quote."
+        parameters:
+          - $ref: "#/components/parameters/id"
+        responses:
+          "200":
+            description: "Successfully retrieved quote."
+  /quotes/{ids}:
+    get:
+      operationId: "quotes.read_multiple"
+      tags:
+        - "Quotes"
+      summary: "Get multiple quotes."
+      parameters:
+        - $ref: "#/components/parameters/ids"
+      responses:
+        "200":
+          description: "Successfully retrieved quotes."
+
+  /episodes:
+    get:
+      operationId: "episodes.read_all"
+      tags:
+        - "Episodes"
+      summary: "Get all episodes."
+      responses:
+        "200":
+          description: "Succesfully retrieved episodes."
+  /episodes/{id}:
+      get:
+        operationId: "episodes.read_one"
+        tags:
+          - "Episodes"
+        summary: "Get a single episode."
+        parameters:
+          - $ref: "#/components/parameters/id"
+        responses:
+          "200":
+            description: "Successfully retrieved episode."
+  /episodes/{ids}:
+    get:
+      operationId: "episodes.read_multiple"
+      tags:
+        - "Episodes"
+      summary: "Get multiple episodes."
+      parameters:
+        - $ref: "#/components/parameters/ids"
+      responses:
+        "200":
+          description: "Successfully retrieved episodes."
