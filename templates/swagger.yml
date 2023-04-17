@@ -1,8 +1,14 @@
 openapi: 3.0.0
 info:
   title: "Archer API"
-  description: "Archer API is based on the adult animated sitcom Archer. It provides data about the show's episodes, characters and quotes."
+  description: |
+    # Introduction
+    Archer API is a REST API based on the adult animated sitcom Archer.
+
+    It provides data about the show's episodes, characters and quotes.
   version: "1.0.0"
+  x-logo:
+    url: 'http://localhost:8000/logo.png'
 
 servers:
   - url: "/api"
@@ -24,21 +30,30 @@ components:
         id:
           type: "integer"
           description: "id of the character."
+          example: 6
         name:
           type: "string"
           description: "Name of the character."
+          example: Pamela Poovey
         aliases:
           type: "string"
           description: "Aliases/nicknames the character is known by."
+          example: Snowball, Shiro Kabocha, Cokey Monster, Spamela, Baby Huey, Aunt Pammy
         occupations:
           type: "string"
           description: "The character's current and former jobs."
-        first_apperance:
+          example: ISIS H.R. director, field agent, police officer.
+        first_appearance:
           type: "string"
           description: "The episode this character first appeared in."
+          example: Mole Hunt
         voice_actor:
           type: "string"
           description: "The character's voice actor."
+          example: Amber Nash
+        quotes:
+          type: "todo"
+
       
     Quote:
       type: "object"
@@ -56,7 +71,7 @@ components:
           description: "Character who said the quote."
         episode:
           type: "string"
-          description: "Episode in which quote was said."
+          description: "Episode in which the quote was said."
 
     Episode:
       type: "object"
@@ -99,11 +114,25 @@ components:
 
 tags:
   - name: "Characters"
-    description: "The Characters endpoint provides information on Archer characters."
+    description: 
+      |
+      The Characters endpoint provides information on Archer characters.
+      # Character schema
+      <SchemaDefinition schemaRef="#/components/schemas/Character" />
   - name: "Episodes"
-    description: "The Episodes endpoint provides information on Archer episodes."
+    description: 
+      |
+      The Episodes endpoint provides information about Archer episodes.
+      # Episode schema
+      <SchemaDefinition schemaRef="#/components/schemas/Episode" />
   - name: "Quotes"
-    description: |
+    description:
+      |
+      The Quotes endpoint provides character quotes from Archer. 
+      
+      Some lines (*"Phrasing!"*) are said multiple times throughought the series, in which case the `episode`
+      property refers to the first episode the quote was said in.
+      # Quote schema
       <SchemaDefinition schemaRef="#/components/schemas/Quote" />
 
 paths:
@@ -112,7 +141,8 @@ paths:
       operationId: "characters.read_all" # Module and function.
       tags:
         - "Characters"
-      summary: "Get all characters." # UI text.
+      summary: "Get all characters" # Left sidebar text.
+      description: You can access the list of all characters by using the `/characters` endpoint. # Middle column text.
       responses:
         "200":
           description: "Successfully retrieved all characters."
@@ -120,12 +150,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Character'
-  /characters/{id}:
+  /characters/8:
     get:
       operationId: "characters.read_one"
       tags:
         - "Characters"
       summary: "Get a single character"
+      description: 
+        You can get a single character by adding the characters's id as a parameter.
+        Note that if you don't know the character's id you can filter based on their
+        name - see below (*"Filtering characters"*).
       parameters:
         - $ref: "#/components/parameters/id"
       responses:
@@ -135,21 +169,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Character'
-  /characters/{ids}:
+              example:
+                aliases: Magnum P.U.
+                first_appearance: The Wind Cries Mary
+                id: 8
+                name: Rodney
+                occupations: Requisitions officer, arms dealer
+                quotes: "[]"
+                voice_actor: Andrew Donnelly
+  /characters/1,10:
     get:
       operationId: "characters.read_multiple"
       tags:
         - "Characters"
-      summary: "Get multiple characters."
+      summary: "Get multiple characters"
+      description: 
+        "You can get multiple characers by passing ids seperated by commas: `characters/1,3`"
       parameters:
         - $ref: "#/components/parameters/ids"
       responses:
         "200":
-          description: "Successfully retrieved characters."
+          description: "Successfully retrieved characters"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Character'
+              example:
+                    - aliases: "Count Snackula"
+                      first_appearance: "Mole Hunt"
+                      id: 1
+                      name: "Bilbo"
+                      occupations: "ISIS Support"
+                      quotes: []
+                      voice_actor: "Adam Reed"
+                    - aliases: "The Needle"
+                      first_appearance: "Killing Utne"
+                      id: 10
+                      name: "Elke Hubsch"
+                      occupations: "Spy, assassin"
+                      quotes: []
+                      voice_actor: "Audrey Wasilewski"
+                
+
+  /characters?name={value}:
+    get:
+      summary: "Filtering characters."
+      tags:
+        - "Characters"
+      parameters:
+        - test: test
 
   /quotes:
     get:
@@ -160,6 +228,15 @@ paths:
       responses:
         "200":
           description: "Succesfully retrieved all quotes."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+              example:
+                  character: "Sterling Malory Archer"
+                  episode: "Killing Utne"
+                  id: 1
+                  quote: "Phrasing!"
   
   /quotes/{id}:
       get:
@@ -172,6 +249,15 @@ paths:
         responses:
           "200":
             description: "Successfully retrieved quote."
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Quote'
+                example:
+                  character: "Pamela Poovey"
+                  episode: "Dial M for Mother"
+                  id: 1
+                  quote: "Sploosh."
   /quotes/{ids}:
     get:
       operationId: "quotes.read_multiple"
@@ -183,6 +269,39 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved quotes."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+              example:
+                - character: Cheryl Tunt
+                  episode: Training Day
+                  id: 3
+                  quote: You're not my supervisor!
+                - character: Pamela Poovey
+                  episode: Skorpio
+                  id: 6
+                  quote: Pipe down, pipe cleaner!
+  
+  /quotes/random:
+    get:
+      operationId: "quotes.get_random"
+      tags:
+        - "Quotes"
+      summary: "Get a random quote."
+      responses:
+        "200":
+          description: "Successfully retrieved a random quote."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+              example: 
+                  - character: "Sterling Malory Archer"
+                    episode: Dial M for Mother
+                    id: 14
+                    quote: Grill me a cheese.
+
 
   /episodes:
     get:
@@ -193,6 +312,10 @@ paths:
       responses:
         "200":
           description: "Succesfully retrieved episodes."
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Episode'
   /episodes/{id}:
       get:
         operationId: "episodes.read_one"
@@ -204,6 +327,10 @@ paths:
         responses:
           "200":
             description: "Successfully retrieved episode."
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Episode'
   /episodes/{ids}:
     get:
       operationId: "episodes.read_multiple"
@@ -215,3 +342,7 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved episodes."
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Episode'

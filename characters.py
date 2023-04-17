@@ -1,10 +1,16 @@
-from flask import make_response, abort
+from flask import make_response, abort, request
 from config import db
 from models import Character, character_schema, characters_schema
 
 def read_all():
-    characters = Character.query.all()
-    return characters_schema.dump(characters)
+    name = request.args.get('name')
+    if name:
+        print(name)
+        characters = Character.query.filter(Character.name.like(f'%{name}%')).all()
+        return characters_schema.dump(characters)
+    else:
+        characters = Character.query.all()
+        return characters_schema.dump(characters)
 
 def read_one(id):
     character = Character.query.filter(Character.id == id).one_or_none()

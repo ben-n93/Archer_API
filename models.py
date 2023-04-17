@@ -25,7 +25,7 @@ class Character(db.Model):
     aliases = db.Column(db.String(32))
     occupations = db.Column(db.String(32))
     voice_actor = db.Column(db.String(32))
-    first_apperance = db.Column(db.String(32))
+    first_appearance = db.Column(db.String(32))
     include_relationships = True
     quotes = db.relationship(
         Quote,

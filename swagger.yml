@@ -1,11 +1,24 @@
 openapi: 3.0.0
 info:
   title: "Archer API"
-  description: "Archer API is based on the adult animated sitcom Archer. It provides data about the show's episodes, characters and quotes."
+  description: |
+    # Introduction
+    Archer API is a REST API based on the adult animated sitcom Archer.
+
+    It provides data about the show's episodes, characters and quotes.
   version: "1.0.0"
+  x-logo:
+    url: 'http://localhost:8000/logo.png'
 
 servers:
   - url: "/api"
+
+x-tagGroups:
+  - name: Endpoints
+    tags:
+      - Characters
+      - "Episodes"
+      - "Quotes"
 
 components:
   schemas:
@@ -155,6 +168,19 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved quotes."
+  /quotes/random:
+    get:
+      operationId: "quotes.get_random"
+      tags:
+        - "Quotes"
+      summary: "Get a random quote."
+      responses:
+        "200":
+          description: "Successfully retrieved a random quote."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
 
   /episodes:
     get:
