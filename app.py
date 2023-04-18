@@ -2,23 +2,25 @@ from flask import render_template, send_file, request
 import connexion
 import config
 from models import Character
+import markdown
+
 
 app = config.connex_app
 app.add_api(config.basedir / "swagger.yml", options={
         'swagger_ui': False
     })
 
-@app.route("/")
-def home():
-    return render_template("home.html")
-
+@app.route('/')
+def index():
+    return render_template('home.html', title='Home', content="""Hello""")
+    
 @app.route("/documentation")
 def documentation():
     return render_template("documentation.html")
 
-@app.route("/swagger.yml")
+@app.route("/documentation.yml")
 def swagger():
-    return render_template("swagger.yml")
+    return render_template("documentation.yml")
 
 @app.route('/logo.png')
 def serve_image():

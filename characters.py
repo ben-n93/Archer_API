@@ -14,6 +14,7 @@ def read_all():
 
 def read_one(id):
     character = Character.query.filter(Character.id == id).one_or_none()
+    print("ping")
     if character is not None:
         return character_schema.dump(character)
     else:
