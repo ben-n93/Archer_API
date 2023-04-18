@@ -30,36 +30,24 @@ components:
         id:
           type: "integer"
           description: "id of the character."
-          example: 101
         name:
           type: "string"
           description: "Name of the character."
-          example: Nikolai Jakov
         aliases:
           type: "string"
           description: "Aliases/nicknames the character is known by."
-          example: "null"
         occupations:
           type: "string"
           description: "The character's current and former jobs."
-          example: Head of KGB
         first_appearance:
           type: "string"
           description: "The episode this character first appeared in."
-          example: Mole Hunt
         voice_actor:
           type: "string"
           description: "The character's voice actor."
-          example: Peter Newman
         quotes:
           type: "object"
           description: "List of quotes said by this character."
-          example:
-            - character: "Nikolai Jakov"
-            - episode: "Mole Hunt"
-            - id: 28
-            - quote: "Who are you - Comrade Question?"
-
       
     Quote:
       type: "object"
@@ -99,6 +87,12 @@ components:
         original_air_date:
           type: "string"
           description: "Date on which the episode first aired."
+        writers:
+          type: "string"
+          description: "People who wrote the episode."
+        director:
+          type: "string"
+          description: "The person who directed the episode."
 
   parameters:
     id:
@@ -219,8 +213,8 @@ paths:
       summary: "Filtering characters"
       tags:
         - "Characters"
-      description: "You can filter characters using the name parameter in the URL. 
-      To start filtering add a ? to the `characters` endpoint followed by `name={value}`. For example,
+      description: "You can filter characters using the name parameter.
+      To start filtering add a `?` to the `characters` endpoint followed by `name={value}`. For example,
       `name=Bilbo`. 
       "
       responses:
@@ -242,28 +236,21 @@ paths:
   /quotes:
     get:
       operationId: "quotes.read_all"
+      description: "You can access the list of all quotes by using the `/quotes` endpoint."
       tags:
         - "Quotes"
-      summary: "Get all quotes."
+      summary: "Get all quotes"
       responses:
         "200":
           description: "Succesfully retrieved all quotes."
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quote'
-              example:
-                  character: "Sterling Malory Archer"
-                  episode: "Killing Utne"
-                  id: 1
-                  quote: "Phrasing!"
   
-  /quotes/{id}:
+  /quotes/{1}:
       get:
         operationId: "quotes.read_one"
         tags:
           - "Quotes"
-        summary: "Get a single quote."
+        summary: "Get a single quote"
+        description: "You can get a single quote by adding the quote's id as a parameter."
         parameters:
           - $ref: "#/components/parameters/id"
         responses:
@@ -278,12 +265,13 @@ paths:
                   episode: "Dial M for Mother"
                   id: 1
                   quote: "Sploosh."
-  /quotes/{ids}:
+  /quotes/{3, 6}:
     get:
       operationId: "quotes.read_multiple"
+      description: "You can get multiple quotes by passing ids seperated by commas: `quotes/3,6`"
       tags:
         - "Quotes"
-      summary: "Get multiple quotes."
+      summary: "Get multiple quotes"
       parameters:
         - $ref: "#/components/parameters/ids"
       responses:
@@ -303,20 +291,35 @@ paths:
                   id: 6
                   quote: Pipe down, pipe cleaner!
 
-  /quotes?name={value}:
+  /quotes?character=Woodhouse:
     get:
-      summary: "Filtering quotes."
+      summary: "Filtering quotes"
+      description: "You can filter quotes by passing the `character` parameter.
+                    To start filtering add a `?` to the `quotes` endpoint followed by `name={value}`.\n
+                    \n
+                    For example, to find all quotes by characters with Woodhouse in their name: `quotes/character=Woodhouse` "
       tags:
         - "Quotes"
-      parameters:
-        - test: test
+      responses:
+        "200":
+          description: "Successfully retrieved a quote."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+              example: 
+                  - character: "Arthur Woodhouse"
+                    episode: Training Day
+                    id: 41
+                    quote: I shall fetch a rug!
   
   /quotes/random:
     get:
       operationId: "quotes.get_random"
+      description: "You can get a random quote using the following endpoint: `quotes/random`"
       tags:
         - "Quotes"
-      summary: "Get a random quote."
+      summary: "Get a random quote"
       responses:
         "200":
           description: "Successfully retrieved a random quote."
@@ -336,20 +339,20 @@ paths:
       operationId: "episodes.read_all"
       tags:
         - "Episodes"
-      summary: "Get all episodes."
+      summary: "Get all episodes"
+      description: You can access the list of all episodes by using the `/episodes` endpoint.
       responses:
         "200":
           description: "Succesfully retrieved episodes."
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Episode'
-  /episodes/{id}:
+
+
+  /episodes/{2}:
       get:
         operationId: "episodes.read_one"
+        description: "You can get a single episode by adding the episodes's id as a parameter."
         tags:
           - "Episodes"
-        summary: "Get a single episode."
+        summary: "Get a single episode"
         parameters:
           - $ref: "#/components/parameters/id"
         responses:
@@ -359,12 +362,23 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Episode'
-  /episodes/{ids}:
+                example:
+                  ep_number: 1
+                  id: 2
+                  name: Mole Hunt
+                  original_air_date: 17 Sep, 2009
+                  season: 1
+                  writers: Adam Reed
+                  director: Adam Reed
+                
+
+  /episodes/{1,36}:
     get:
       operationId: "episodes.read_multiple"
+      description: "You can get a multiple episodes by adding passing multiplee ids seperated by commas: `episodes/1,36`"
       tags:
         - "Episodes"
-      summary: "Get multiple episodes."
+      summary: "Get multiple episodes"
       parameters:
         - $ref: "#/components/parameters/ids"
       responses:
@@ -374,3 +388,19 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/Episode'
+                example:
+                  - ep_number: 1
+                    id: 2
+                    name: Mole Hunt
+                    original_air_date: 17 Sep, 2009
+                    season: 1
+                    writers: Adam Reed
+                    director: Adam Reed
+                  - ep_number: 12
+                    id: 36
+                    name: "Space Race: Part I"
+                    original_air_date: 15 Mar, 2012
+                    season: 3
+                    writers: Adam Reed
+                    director: Adam Reed
+
