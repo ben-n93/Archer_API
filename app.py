@@ -12,7 +12,11 @@ app.add_api(config.basedir / "swagger.yml", options={
 
 @app.route('/')
 def index():
-    return render_template('home.html', title='Home', content="""Hello""")
+    return render_template('index.html', title='Home')
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title='Home')
     
 @app.route("/documentation")
 def documentation():
@@ -24,7 +28,7 @@ def swagger():
 
 @app.route('/logo.png')
 def serve_image():
-    filename = '/Users/benjaminnour/Documents/Python/Projects/archer_API_flask/logo.png'  # replace with the actual path to your image file
+    filename = '/Users/benjaminnour/Documents/Python/Projects/archer_API_flask/static/images/logo.png'  # replace with the actual path to your image file
     return send_file(filename, mimetype='image/png')
 
 if __name__ == "__main__":
