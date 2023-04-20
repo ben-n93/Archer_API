@@ -28,7 +28,7 @@ def swagger():
 
 @app.route('/logo.png')
 def serve_image():
-    filename = '/Users/benjaminnour/Documents/Python/Projects/archer_API_flask/static/images/logo.png'  # replace with the actual path to your image file
+    filename = './static/images/logo.png'  # replace with the actual path to your image file
     return send_file(filename, mimetype='image/png')
 
 if __name__ == "__main__":
