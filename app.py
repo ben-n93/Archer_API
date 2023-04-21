@@ -1,9 +1,6 @@
 from flask import render_template, send_file, request
 import connexion
 import config
-from models import Character
-import markdown
-
 
 app = config.connex_app
 app.add_api(config.basedir / "swagger.yml", options={
@@ -28,8 +25,13 @@ def swagger():
 
 @app.route('/logo.png')
 def serve_image():
-    filename = './static/images/logo.png'  # replace with the actual path to your image file
+    filename = './static/images/logo.png'  
+    return send_file(filename, mimetype='image/png')
+
+@app.route('/archer_favicon.png')
+def serve_favicon_image():
+    filename = './static/images/archer_favicon.png'
     return send_file(filename, mimetype='image/png')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True, ssl_context='adhoc')
+    app.run()

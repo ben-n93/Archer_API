@@ -30,9 +30,9 @@ def read_multiple(ids):
 def get_random():
     count = db.session.query(db.func.count(models.Quote.id)).scalar()
     random_number = random.randint(1, count)
-    print(type(random_number))
     quote = models.Quote.query.filter(models.Quote.id == random_number).one_or_none()
     if quote:
         return models.quote_schema.dump(quote)
     else:
         abort(404, f"Error.")
+        
