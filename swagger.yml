@@ -8,7 +8,7 @@ info:
     It provides data about the show's episodes, characters and quotes.
   version: "1.0.0"
   x-logo:
-    url: 'http://localhost:8000/logo.png'
+    url: 'https://www.archerapi.com/logo.png'
 
 servers:
   - url: "/api"
@@ -115,10 +115,10 @@ components:
 paths:
   /characters:
     get:
-      operationId: "characters.read_all" # Module and function.
+      operationId: "characters.read_all"
       tags:
         - "Characters"
-      summary: "Get all characters." # UI text.
+      summary: "Get all characters."
       responses:
         "200":
           description: "Successfully retrieved all characters."

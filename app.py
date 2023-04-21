@@ -1,6 +1,7 @@
-from flask import render_template, send_file, request
+from flask import render_template, send_file, request, jsonify
 import connexion
 import config
+from models import Character
 
 app = config.connex_app
 app.add_api(config.basedir / "swagger.yml", options={
@@ -11,11 +12,18 @@ app.add_api(config.basedir / "swagger.yml", options={
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/about')
+@app.route('/api/')
+def endpoints():
+    return jsonify({'characters': 'https://www.archerapi.com/api/characters',
+    'episodes':'https://www.archerapi.com/api/episodes',
+    'quotes':'https://www.archerapi.com/api/characters'
+    })
+
+@app.route('/about/')
 def about():
     return render_template('about.html', title='Home')
     
-@app.route("/documentation")
+@app.route("/documentation/")
 def documentation():
     return render_template("documentation.html")
 
@@ -35,3 +43,4 @@ def serve_favicon_image():
 
 if __name__ == "__main__":
     app.run()
+    #app.run(host="0.0.0.0", port=8000, debug=True)

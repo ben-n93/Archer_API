@@ -8,7 +8,7 @@ info:
     It provides data about the show's episodes, characters and quotes.
   version: "1.0.0"
   x-logo:
-    url: 'http://localhost:8000/logo.png'
+    url: 'https://www.archerapi.com/logo.png'
 
 servers:
   - url: "/api"
