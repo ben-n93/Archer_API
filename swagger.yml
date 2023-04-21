@@ -6,6 +6,8 @@ info:
     Archer API is a REST API based on the adult animated sitcom Archer.
 
     It provides data about the show's episodes, characters and quotes.
+
+    Github: https://github.com/ben-n93/archer_api
   version: "1.0.0"
   x-logo:
     url: 'https://www.archerapi.com/logo.png'
