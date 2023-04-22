@@ -16,3 +16,8 @@ and let me know so I can link here and in the API documentation.
 ### Contact
 
 Please [contact me](mailto:hello@ben-nour.com) with any questions or feedback.
+
+### Licence
+
+Distributed under the Apache-2.0 License. See LICENSE.md for more information.
+
