@@ -16,7 +16,7 @@ def index():
 def endpoints():
     return jsonify({'characters': 'https://www.archerapi.com/api/characters',
     'episodes':'https://www.archerapi.com/api/episodes',
-    'quotes':'https://www.archerapi.com/api/characters'
+    'quotes':'https://www.archerapi.com/api/quotes'
     })
 
 @app.route('/about/')
