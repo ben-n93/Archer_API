@@ -2,6 +2,19 @@
 
 [Archer API](https://www.archerapi.com/) is a REST API that provides data about the adult animated spy comedy [Archer](https://www.fxnetworks.com/shows/archer).
 
+For example, to get a random quote you can acess this endpoint: [archerapi.com/api/quotes/random](https://archerapi.com/api/quotes/random)
+
+Response:
+
+```
+{
+  "character": "Algernop Krieger",
+  "episode": "The Papal Chase",
+  "id": 25,
+  "quote": "Jazz hands!"
+}
+```
+
 ### Documentation
 
 You can find the documentation [here](https://www.archerapi.com/documentation/).
