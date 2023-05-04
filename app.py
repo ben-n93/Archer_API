@@ -1,7 +1,6 @@
 from flask import render_template, send_file, request, jsonify
 import connexion
 import config
-from models import Character
 
 app = config.connex_app
 app.add_api(config.basedir / "swagger.yml", options={
