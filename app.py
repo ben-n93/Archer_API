@@ -1,5 +1,4 @@
-from flask import render_template, send_file, request, jsonify
-import connexion
+from flask import render_template, send_file, jsonify
 import config
 
 app = config.connex_app
@@ -21,7 +20,7 @@ def endpoints():
 @app.route('/about/')
 def about():
     return render_template('about.html', title='Home')
-    
+
 @app.route("/documentation/")
 def documentation():
     return render_template("documentation.html")
@@ -32,7 +31,7 @@ def swagger():
 
 @app.route('/logo.png')
 def serve_image():
-    filename = './static/images/logo.png'  
+    filename = './static/images/logo.png'
     return send_file(filename, mimetype='image/png')
 
 @app.route('/archer_favicon.png')
