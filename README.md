@@ -30,7 +30,9 @@ You can find the documentation [here](https://www.archerapi.com/documentation/).
 If you'd like to support the cost of maintaining this project's infrastructure you can do so [here](https://www.buymeacoffee.com/ben93).
 
 It would be great to see some community libraries so if that's of interest to you I encourage you to build something in whatever language
-and let me know so I can link here and in the API documentation.
+and let me know so I can link here and in the API documentation (as follows).
+
+### Community libaries
 
 ### Contact
 
