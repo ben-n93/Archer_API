@@ -11,7 +11,6 @@ info:
   version: "1.0.0"
   x-logo:
     url: 'https://www.archerapi.com/logo.png'
-    href: 'https://www.archerapi.com/'
 
 servers:
   - url: "/api"
@@ -98,8 +97,8 @@ components:
           description: "The person who directed the episode."
 
   parameters:
-    id:
-      name: "id"
+    character_id:
+      name: "character_id"
       description: "The id of the resource."
       in: path
       required: True
@@ -114,43 +113,18 @@ components:
         type: array
         items:
           type: integer
-
-tags:
-  - name: "Characters"
-    description: 
-      |
-      The Characters endpoint provides information on Archer characters.
-      # Character schema
-      <SchemaDefinition schemaRef="#/components/schemas/Character" />
-  - name: "Episodes"
-    description: 
-      |
-      The Episodes endpoint provides information about Archer episodes.
-      # Episode schema
-      <SchemaDefinition schemaRef="#/components/schemas/Episode" />
-  - name: "Quotes"
-    description:
-      |
-      The Quotes endpoint provides character quotes from Archer. 
-      
-      Some lines (*"Phrasing!"*) are said multiple times throughought the series, in which case the `episode`
-      property refers to the first episode the quote was said in.
-      # Quote schema
-      <SchemaDefinition schemaRef="#/components/schemas/Quote" />
-
+        
 paths:
   /characters:
     get:
-      operationId: "characters.read_all" # Module and function.
+      operationId: "characters.read_all"
       tags:
         - "Characters"
-      summary: "Get all characters" # Left sidebar text.
-      description: You can access the list of all characters by using the `/characters` endpoint. # Middle column text.
+      summary: "Get all characters."
       responses:
         "200":
           description: "Successfully retrieved all characters."
-
-  /characters/8:
+  /characters/{character_id}:
     get:
       operationId: "characters.read_one"
       tags:
@@ -161,7 +135,7 @@ paths:
         Note that if you don't know the character's id you can filter based on their
         name - see below (*"Filtering characters"*).
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/character_id"
       responses:
         "200":
           description: "Successfully retrieved character."
@@ -177,66 +151,8 @@ paths:
                 occupations: Requisitions officer, arms dealer
                 quotes: "[]"
                 voice_actor: Andrew Donnelly
-                
-  /characters/1,10:
-    get:
-      operationId: "characters.read_multiple"
-      tags:
-        - "Characters"
-      summary: "Get multiple characters"
-      description: 
-        "You can get multiple characers by passing ids seperated by commas: `characters/1,10`"
-      parameters:
-        - $ref: "#/components/parameters/ids"
-      responses:
-        "200":
-          description: "Successfully retrieved characters"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Character'
-              example:
-                    - aliases: "Count Snackula"
-                      first_appearance: "Mole Hunt"
-                      id: 1
-                      name: "Bilbo"
-                      occupations: "ISIS Support"
-                      quotes: []
-                      voice_actor: "Adam Reed"
-                    - aliases: "The Needle"
-                      first_appearance: "Killing Utne"
-                      id: 10
-                      name: "Elke Hubsch"
-                      occupations: "Spy, assassin"
-                      quotes: []
-                      voice_actor: "Audrey Wasilewski"
-                
 
-  /characters?name={Bilbo}:
-    get:
-      summary: "Filtering characters"
-      tags:
-        - "Characters"
-      description: "You can filter characters using the name parameter.
-      To start filtering add a `?` to the `characters` endpoint followed by `name={value}`. For example,
-      `name=Bilbo`. 
-      "
-      responses:
-              "200":
-                description: "Successfully retrieved characters"
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Character'
-                    example:
-                          - aliases: "Count Snackula"
-                            first_appearance: "Mole Hunt"
-                            id: 1
-                            name: "Bilbo"
-                            occupations: "ISIS Support"
-                            quotes: []
-                            voice_actor: "Adam Reed"
-
+  
   /quotes:
     get:
       operationId: "quotes.read_all"
@@ -248,7 +164,7 @@ paths:
         "200":
           description: "Succesfully retrieved all quotes."
   
-  /quotes/{1}:
+  /quotes/{quote_id}:
       get:
         operationId: "quotes.read_one"
         tags:
@@ -256,7 +172,12 @@ paths:
         summary: "Get a single quote"
         description: "You can get a single quote by adding the quote's id as a parameter."
         parameters:
-          - $ref: "#/components/parameters/id"
+          - name: "quote_id"
+            in: "path"
+            description: "ID of the quote"
+            required: true
+            schema:
+              type: "integer"
         responses:
           "200":
             description: "Successfully retrieved quote."
@@ -269,54 +190,7 @@ paths:
                   episode: "Dial M for Mother"
                   id: 1
                   quote: "Sploosh."
-  /quotes/{3, 6}:
-    get:
-      operationId: "quotes.read_multiple"
-      description: "You can get multiple quotes by passing ids seperated by commas: `quotes/3,6`"
-      tags:
-        - "Quotes"
-      summary: "Get multiple quotes"
-      parameters:
-        - $ref: "#/components/parameters/ids"
-      responses:
-        "200":
-          description: "Successfully retrieved quotes."
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quote'
-              example:
-                - character: Cheryl Tunt
-                  episode: Training Day
-                  id: 3
-                  quote: You're not my supervisor!
-                - character: Pamela Poovey
-                  episode: Skorpio
-                  id: 6
-                  quote: Pipe down, pipe cleaner!
 
-  /quotes?character=Woodhouse:
-    get:
-      summary: "Filtering quotes"
-      description: "You can filter quotes by passing the `character` parameter.
-                    To start filtering add a `?` to the `quotes` endpoint followed by `name={value}`.\n
-                    \n
-                    For example, to find all quotes by characters with Woodhouse in their name: `quotes/character=Woodhouse` "
-      tags:
-        - "Quotes"
-      responses:
-        "200":
-          description: "Successfully retrieved a quote."
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quote'
-              example: 
-                  - character: "Arthur Woodhouse"
-                    episode: Training Day
-                    id: 41
-                    quote: I shall fetch a rug!
-  
   /quotes/random:
     get:
       operationId: "quotes.get_random"
@@ -337,7 +211,6 @@ paths:
                     id: 14
                     quote: Grill me a cheese.
 
-
   /episodes:
     get:
       operationId: "episodes.read_all"
@@ -350,7 +223,7 @@ paths:
           description: "Succesfully retrieved episodes."
 
 
-  /episodes/{2}:
+  /episodes/{episode_id}:
       get:
         operationId: "episodes.read_one"
         description: "You can get a single episode by adding the episodes's id as a parameter."
@@ -358,7 +231,13 @@ paths:
           - "Episodes"
         summary: "Get a single episode"
         parameters:
-          - $ref: "#/components/parameters/id"
+          - name: "episode_id"
+            in: "path"
+            description: "ID of the episode"
+            required: true
+            schema:
+              type: "integer"
+        
         responses:
           "200":
             description: "Successfully retrieved episode."
@@ -375,36 +254,3 @@ paths:
                   writers: Adam Reed
                   director: Adam Reed
                 
-
-  /episodes/{1,36}:
-    get:
-      operationId: "episodes.read_multiple"
-      description: "You can get a multiple episodes by adding passing multiplee ids seperated by commas: `episodes/1,36`"
-      tags:
-        - "Episodes"
-      summary: "Get multiple episodes"
-      parameters:
-        - $ref: "#/components/parameters/ids"
-      responses:
-        "200":
-          description: "Successfully retrieved episodes."
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Episode'
-                example:
-                  - ep_number: 1
-                    id: 2
-                    name: Mole Hunt
-                    original_air_date: 17 Sep, 2009
-                    season: 1
-                    writers: Adam Reed
-                    director: Adam Reed
-                  - ep_number: 12
-                    id: 36
-                    name: "Space Race: Part I"
-                    original_air_date: 15 Mar, 2012
-                    season: 3
-                    writers: Adam Reed
-                    director: Adam Reed
-
