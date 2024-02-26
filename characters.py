@@ -1,5 +1,5 @@
 from flask import abort, request
-from models import Character, character_schema, characters_schema
+import models
 
 
 def read_all():
@@ -9,11 +9,13 @@ def read_all():
     """
     name = request.args.get("name")
     if name:
-        characters = Character.query.filter(Character.name.like(f"%{name}%")).all()
-        return characters_schema.dump(characters)
+        characters = models.Character.query.filter(
+            models.Character.name.like(f"%{name}%")
+        ).all()
+        return models.characters_schema.dump(characters)
     if not name:
-        characters = Character.query.all()
-        return characters_schema.dump(characters)
+        characters = models.Character.query.all()
+        return models.characters_schema.dump(characters)
 
 
 def read_one(character_id):
@@ -21,8 +23,10 @@ def read_one(character_id):
     Return character date for the specified character.
     """
     print("Episode:", character_id)
-    character = Character.query.filter(Character.id == character_id).one_or_none()
+    character = models.Character.query.filter(
+        models.Character.id == character_id
+    ).one_or_none()
     if character is not None:
-        return character_schema.dump(character)
+        return models.character_schema.dump(character)
     if character is None:
         abort(404, f"Character with {character_id} not found.")
