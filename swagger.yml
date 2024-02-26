@@ -152,39 +152,6 @@ paths:
                 quotes: "[]"
                 voice_actor: Andrew Donnelly
 
-  /characters/{ids}:
-    get:
-      operationId: "characters.read_multiple"
-      tags:
-        - "Characters"
-      summary: "Get multiple characters"
-      description: 
-        "You can get multiple characers by passing ids seperated by commas: `characters/1,10`"
-      parameters:
-        - $ref: "#/components/parameters/ids"
-      responses:
-        "200":
-          description: "Successfully retrieved characters"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Character'
-              example:
-                    - aliases: "Count Snackula"
-                      first_appearance: "Mole Hunt"
-                      id: 1
-                      name: "Bilbo"
-                      occupations: "ISIS Support"
-                      quotes: []
-                      voice_actor: "Adam Reed"
-                    - aliases: "The Needle"
-                      first_appearance: "Killing Utne"
-                      id: 10
-                      name: "Elke Hubsch"
-                      occupations: "Spy, assassin"
-                      quotes: []
-                      voice_actor: "Audrey Wasilewski"
-
   
   /quotes:
     get:
@@ -224,32 +191,6 @@ paths:
                   id: 1
                   quote: "Sploosh."
 
-  /quotes/{ids}:
-    get:
-      operationId: "quotes.read_multiple"
-      description: "You can get multiple quotes by passing ids seperated by commas: `quotes/3,6`"
-      tags:
-        - "Quotes"
-      summary: "Get multiple quotes"
-      parameters:
-        - $ref: "#/components/parameters/character_id"
-      responses:
-        "200":
-          description: "Successfully retrieved quotes."
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quote'
-              example:
-                - character: Cheryl Tunt
-                  episode: Training Day
-                  id: 3
-                  quote: You're not my supervisor!
-                - character: Pamela Poovey
-                  episode: Skorpio
-                  id: 6
-                  quote: Pipe down, pipe cleaner!
-
   /quotes/random:
     get:
       operationId: "quotes.get_random"
@@ -282,7 +223,7 @@ paths:
           description: "Succesfully retrieved episodes."
 
 
-  /episodes/{id}:
+  /episodes/{episode_id}:
       get:
         operationId: "episodes.read_one"
         description: "You can get a single episode by adding the episodes's id as a parameter."
@@ -290,7 +231,13 @@ paths:
           - "Episodes"
         summary: "Get a single episode"
         parameters:
-          - $ref: "#/components/parameters/character_id"
+          - name: "episode_id"
+            in: "path"
+            description: "ID of the episode"
+            required: true
+            schema:
+              type: "integer"
+        
         responses:
           "200":
             description: "Successfully retrieved episode."
@@ -307,35 +254,3 @@ paths:
                   writers: Adam Reed
                   director: Adam Reed
                 
-
-  /episodes/{ids}:
-    get:
-      operationId: "episodes.read_multiple"
-      description: "You can get a multiple episodes by adding passing multiplee ids seperated by commas: `episodes/1,36`"
-      tags:
-        - "Episodes"
-      summary: "Get multiple episodes"
-      parameters:
-        - $ref: "#/components/parameters/ids"
-      responses:
-        "200":
-          description: "Successfully retrieved episodes."
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Episode'
-                example:
-                  - ep_number: 1
-                    id: 2
-                    name: Mole Hunt
-                    original_air_date: 17 Sep, 2009
-                    season: 1
-                    writers: Adam Reed
-                    director: Adam Reed
-                  - ep_number: 12
-                    id: 36
-                    name: "Space Race: Part I"
-                    original_air_date: 15 Mar, 2012
-                    season: 3
-                    writers: Adam Reed
-                    director: Adam Reed
