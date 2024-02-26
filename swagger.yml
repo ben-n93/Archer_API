@@ -97,8 +97,8 @@ components:
           description: "The person who directed the episode."
 
   parameters:
-    id:
-      name: "id"
+    character_id:
+      name: "character_id"
       description: "The id of the resource."
       in: path
       required: True
@@ -124,7 +124,7 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved all characters."
-  /characters/{id}:
+  /characters/{character_id}:
     get:
       operationId: "characters.read_one"
       tags:
@@ -135,7 +135,7 @@ paths:
         Note that if you don't know the character's id you can filter based on their
         name - see below (*"Filtering characters"*).
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/character_id"
       responses:
         "200":
           description: "Successfully retrieved character."
@@ -197,7 +197,7 @@ paths:
         "200":
           description: "Succesfully retrieved all quotes."
   
-  /quotes/{id}:
+  /quotes/{quote_id}:
       get:
         operationId: "quotes.read_one"
         tags:
@@ -205,7 +205,12 @@ paths:
         summary: "Get a single quote"
         description: "You can get a single quote by adding the quote's id as a parameter."
         parameters:
-          - $ref: "#/components/parameters/id"
+          - name: "quote_id"
+            in: "path"
+            description: "ID of the quote"
+            required: true
+            schema:
+              type: "integer"
         responses:
           "200":
             description: "Successfully retrieved quote."
@@ -227,7 +232,7 @@ paths:
         - "Quotes"
       summary: "Get multiple quotes"
       parameters:
-        - $ref: "#/components/parameters/ids"
+        - $ref: "#/components/parameters/character_id"
       responses:
         "200":
           description: "Successfully retrieved quotes."
@@ -285,7 +290,7 @@ paths:
           - "Episodes"
         summary: "Get a single episode"
         parameters:
-          - $ref: "#/components/parameters/id"
+          - $ref: "#/components/parameters/character_id"
         responses:
           "200":
             description: "Successfully retrieved episode."
