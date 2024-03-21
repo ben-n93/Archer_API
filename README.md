@@ -1,7 +1,3 @@
-![test](https://github.com/ben-n93/Project_Guntenberg_SF_TwitterBot/actions/workflows/post-book-tweet.yml/badge.svg)
-
-https://github.com/ben-n93/Project_Guntenberg_SF_TwitterBot/actions/workflows/post-book-tweet.yml/badge.svg
-
 <p><img src="https://www.archerapi.com/logo.png" alt="image-description" style="width: 50%; height: auto;"></p>
 
 [Archer API](https://www.archerapi.com/) is a REST API that provides data about the adult animated spy comedy [Archer](https://www.fxnetworks.com/shows/archer).
