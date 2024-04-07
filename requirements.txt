@@ -8,7 +8,7 @@ Babel==2.12.1
 beautifulsoup4==4.12.2
 blinker==1.7.0
 bs4==0.0.1
-certifi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_477u68wvzm/croot/certifi_1671487773341/work/certifi
+certifi==2024.2.2
 charset-normalizer==3.1.0
 cinemagoer @ git+https://github.com/cinemagoer/cinemagoer@7c7960aae4ac733144fc8725cbc6a50176a8b572
 click==8.1.3
